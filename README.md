@@ -1,2 +1,3 @@
 # quarkus-datadog
-Quarkus with Datadog
+
+Quarkus with Datadog and Container Apps
