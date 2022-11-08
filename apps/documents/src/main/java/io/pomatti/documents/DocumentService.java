@@ -18,4 +18,8 @@ public class DocumentService {
     em.persist(doc);
   }
 
+  public Document findDocument(Long id) {
+    return em.find(Document.class, id);
+  }
+
 }
