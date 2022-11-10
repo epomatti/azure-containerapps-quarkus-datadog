@@ -1,4 +1,4 @@
-# quarkus-datadog
+# Quarkus Datadog
 
 Quarkus with Datadog and Container Apps
 
