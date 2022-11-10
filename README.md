@@ -1,6 +1,6 @@
 # Quarkus Datadog
 
-Quarkus with Datadog and Container Apps
+Quarkus with Datadog and Container Apps.
 
 ## Local development
 
