@@ -8,10 +8,8 @@ services:
       - DD_LOGS_ENABLED=true
       - DD_LOGS_CONFIG_CONTAINER_COLLECT_ALL=true
       - DD_PROCESS_AGENT_ENABLED=true
-      # - DD_DOCKER_LABELS_AS_TAGS={"my.custom.label.team":"team"}
       - DD_TAGS='env:quarkus-dev'
       - DD_HOSTNAME=quarkus-dev-host
-      # - DD_SITE=datadoghq.com
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - /proc/:/host/proc/:ro
@@ -35,6 +33,10 @@ services:
       - quarkus
     depends_on:
       - postgres
+    labels:
+      com.datadoghq.tags.env: 'quarkus-dev'
+      com.datadoghq.tags.service: 'documents-service'
+      com.datadoghq.tags.version: '1.0'
 
   postgres:
     image: postgres
