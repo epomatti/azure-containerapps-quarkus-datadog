@@ -104,11 +104,11 @@ resource "azapi_resource" "managed_environment" {
 
 ### Application Apps - Services ###
 
-# module "containerapp_order" {
+# module "containerapp_documents" {
 #   source = "./modules/containerapp"
 
 #   # Container App
-#   name        = "app-order"
+#   name        = "app-documents"
 #   location    = var.location
 #   group_id    = azurerm_resource_group.default.id
 #   environment = azapi_resource.managed_environment.id
@@ -130,12 +130,6 @@ resource "azapi_resource" "managed_environment" {
 #   ]
 # }
 
-### Dapr ###
-# module "datadog" {
-#   source                       = "./modules/datadog"
-#   environment                  = azapi_resource.managed_environment.id
-#   servicebus_connection_string = azurerm_servicebus_namespace.default.default_primary_connection_string
-# }
 
 ### Outputs ###
 

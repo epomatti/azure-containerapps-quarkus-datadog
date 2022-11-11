@@ -1,5 +1,9 @@
 terraform {
   required_providers {
+    azurerm = {
+      source  = "hashicorp/azurerm"
+      version = "3.30.0"
+    }
     azapi = {
       source  = "Azure/azapi"
       version = "1.0.0"
@@ -7,36 +11,57 @@ terraform {
   }
 }
 
-variable "environment" {
-  type = string
-}
+resource "azapi_resource" "container_app" {
+  name      = var.name
+  location  = var.location
+  parent_id = var.group_id
+  type      = "Microsoft.App/containerApps@2022-03-01"
 
-resource "azapi_resource" "datadog" {
-  name      = "datadog-agent"
-  parent_id = var.environment
-  type      = "Microsoft.App/managedEnvironments/daprComponents@2022-03-01"
+  response_export_values = ["properties.configuration.ingress.fqdn"]
 
   body = jsonencode({
-    properties = {
-      componentType = "pubsub.azure.servicebus"
-      version       = "v1"
-      initTimeout   = "60"
-      metadata = [
-        {
-          name      = "connectionString",
-          secretRef = "primary-connection-string"
+    properties : {
+      managedEnvironmentId = var.environment
+      configuration = {
+        ingress = {
+          external   = false
+          targetPort = 8126
         }
-      ]
-      secrets = [
-        {
-          name  = "primary-connection-string",
-          value = var.servicebus_connection_string
+      }
+      template = {
+        containers = [
+          {
+            name  = "datadog-agent"
+            image = ""
+            resources = {
+              cpu    = 1.0
+              memory = "2.0Gi"
+            }
+            env = var.container_envs
+            probes = [
+              {
+                type = "Liveness"
+                httpGet = {
+                  path = "/liveness"
+                  port = var.ingress_target_port
+                  httpHeaders = [
+                    {
+                      name  = "Custom-Header"
+                      value = "Awesome"
+                    }
+                  ]
+                }
+                initialDelaySeconds = 3
+                periodSeconds       = 3
+              }
+            ]
+          }
+        ]
+        scale = {
+          minReplicas = 1
+          maxReplicas = 2
         }
-      ]
-      scopes = [
-        "order",
-        "delivery"
-      ]
+      }
     }
   })
 }

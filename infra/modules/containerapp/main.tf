@@ -27,12 +27,6 @@ resource "azapi_resource" "container_app" {
           external   = var.external
           targetPort = var.ingress_target_port
         }
-        dapr = {
-          enabled     = true
-          appId       = var.dapr_appId
-          appPort     = var.dapr_appPort
-          appProtocol = "http"
-        }
       }
       template = {
         containers = [
@@ -40,8 +34,8 @@ resource "azapi_resource" "container_app" {
             name  = var.name
             image = var.container_image
             resources = {
-              cpu    = 0.5
-              memory = "1.0Gi"
+              cpu    = var.cpu
+              memory = var.memory
             }
             env = var.container_envs
             probes = [

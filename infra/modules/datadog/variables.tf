@@ -27,22 +27,6 @@ variable "ingress_target_port" {
   type = number
 }
 
-### Container ###
-
-variable "container_image" {
-  type = string
-}
-
-### Resources ###
-
-variable "cpu" {
-  type = number
-}
-
-variable "memory" {
-  type = string
-}
-
 ### Envs ###
 
 variable "container_envs" {
