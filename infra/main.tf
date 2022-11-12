@@ -22,7 +22,9 @@ provider "azurerm" {
 ### Locals ###
 
 locals {
-  project = "quarkus"
+  project           = "quarkus"
+  postgres_username = "psqladmin"
+  postgres_password = "p4ssw0rd"
 }
 
 ### Group ###
@@ -57,6 +59,17 @@ module "network" {
 #   namespace_id        = azurerm_servicebus_namespace.default.id
 #   enable_partitioning = true
 # }
+
+### Postgres ###
+
+module "postgres" {
+  source              = "./modules/postgres"
+  project             = local.project
+  location            = var.location
+  resource_group_name = azurerm_resource_group.default.name
+  username            = local.postgres_username
+  password            = local.postgres_password
+}
 
 ### Azure Monitor ###
 

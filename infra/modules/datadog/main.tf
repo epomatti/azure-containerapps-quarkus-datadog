@@ -34,8 +34,8 @@ resource "azapi_resource" "container_app" {
             name  = "datadog-agent"
             image = "datadog/agent:7.39.2"
             resources = {
-              cpu    = 1.0
-              memory = "2.0Gi"
+              cpu    = 0.25
+              memory = "0.5Gi"
             }
             env = [
               { name = "DD_API_KEY", value = var.dd_api_key },
