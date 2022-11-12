@@ -43,6 +43,14 @@ Start Quarkus:
 quarkus dev
 ```
 
+## Docker Push
+
+```
+docker login
+docker build -t epomatti/quarkus-datadog-documents .
+docker push epomatti/quarkus-datadog-documents
+```
+
 ## Docker Compose
 
 Set the API key and start the containers:
@@ -60,3 +68,4 @@ Test it:
 curl -X POST localhost:8080/documents
 curl localhost:8080/documents/1
 ```
+

@@ -32,7 +32,7 @@ resource "azapi_resource" "container_app" {
         containers = [
           {
             name  = "datadog-agent"
-            image = "datadog/agent"
+            image = "datadog/agent:7.39.2"
             resources = {
               cpu    = 1.0
               memory = "2.0Gi"
@@ -45,7 +45,21 @@ resource "azapi_resource" "container_app" {
               { name = "DD_PROCESS_AGENT_ENABLED", value = "true" },
               { name = "DD_TAGS", value = "env:quarkus-azure" },
               { name = "DD_APM_NON_LOCAL_TRAFFIC", value = "true" },
+              # https://github.com/DataDog/integrations-core/issues/2582
+              { name = "DD_KUBELET_TLS_VERIFY", value = "false" },
             ]
+            # probes = [
+            #   {
+            #     type = "Liveness"
+            #     httpGet = {
+            #       path = "/"
+            #       port = 8126
+            #     }
+            #     initialDelaySeconds = 60
+            #     periodSeconds       = 240
+            #     successThreshold    = 1
+            #   }
+            # ]
           }
         ]
         scale = {
