@@ -12,7 +12,7 @@ terraform {
 }
 
 resource "azapi_resource" "container_app" {
-  name      = var.name
+  name      = "app-datadog-agent"
   location  = var.location
   parent_id = var.group_id
   type      = "Microsoft.App/containerApps@2022-03-01"
@@ -32,28 +32,19 @@ resource "azapi_resource" "container_app" {
         containers = [
           {
             name  = "datadog-agent"
-            image = ""
+            image = "datadog/agent"
             resources = {
               cpu    = 1.0
               memory = "2.0Gi"
             }
-            env = var.container_envs
-            probes = [
-              {
-                type = "Liveness"
-                httpGet = {
-                  path = "/liveness"
-                  port = var.ingress_target_port
-                  httpHeaders = [
-                    {
-                      name  = "Custom-Header"
-                      value = "Awesome"
-                    }
-                  ]
-                }
-                initialDelaySeconds = 3
-                periodSeconds       = 3
-              }
+            env = [
+              { name = "DD_API_KEY", value = var.dd_api_key },
+              { name = "DD_SITE", value = "datadoghq.com" },
+              { name = "DD_LOGS_ENABLED", value = "true" },
+              { name = "DD_LOGS_CONFIG_CONTAINER_COLLECT_ALL", value = "false" },
+              { name = "DD_PROCESS_AGENT_ENABLED", value = "true" },
+              { name = "DD_TAGS", value = "env:quarkus-azure" },
+              { name = "DD_APM_NON_LOCAL_TRAFFIC", value = "true" },
             ]
           }
         ]

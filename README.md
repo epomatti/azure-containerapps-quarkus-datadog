@@ -2,6 +2,27 @@
 
 Quarkus with Datadog and Container Apps.
 
+## Running on Azure
+
+CD into `infra`:
+
+```sh
+cd infra
+```
+
+Create the `.auto.tfvars`:
+
+```hcl
+dd_api_key = "00000000000000000000000000000000"
+```
+
+Start the infra:
+
+```sh
+terraform init
+terraform apply -auto-approve
+```
+
 ## Local development
 
 Enter the app directory:

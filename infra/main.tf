@@ -102,6 +102,16 @@ resource "azapi_resource" "managed_environment" {
   })
 }
 
+### Datadog Agent ###
+
+module "datadog_agent" {
+  source      = "./modules/datadog"
+  location    = var.location
+  group_id    = azurerm_resource_group.default.id
+  environment = azapi_resource.managed_environment.id
+  dd_api_key  = var.dd_api_key
+}
+
 ### Application Apps - Services ###
 
 # module "containerapp_documents" {
