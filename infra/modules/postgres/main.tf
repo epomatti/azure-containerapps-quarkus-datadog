@@ -26,8 +26,7 @@ variable "username" {
 }
 
 variable "password" {
-  type      = string
-  sensitive = true
+  type = string
 }
 
 ### Postgres ###
@@ -47,6 +46,6 @@ resource "azurerm_postgresql_flexible_server" "default" {
 
 ### Output ###
 
-output "fqdn" {
-  value = azurerm_postgresql_flexible_server.default.fqdn
+output "jdbc" {
+  value = "jdbc:postgresql://${azurerm_postgresql_flexible_server.default.fqdn}:5432/postgres?user=${var.username}&password=${var.password}&sslmode=require"
 }

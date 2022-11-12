@@ -127,35 +127,46 @@ module "datadog_agent" {
 
 ### Application Apps - Services ###
 
-# module "containerapp_documents" {
-#   source = "./modules/containerapp"
+module "containerapp_documents" {
+  source = "./modules/containerapp"
 
-#   # Container App
-#   name        = "app-documents"
-#   location    = var.location
-#   group_id    = azurerm_resource_group.default.id
-#   environment = azapi_resource.managed_environment.id
+  # Container App
+  name        = "app-documents"
+  location    = var.location
+  group_id    = azurerm_resource_group.default.id
+  environment = azapi_resource.managed_environment.id
 
-#   # Ingress
-#   external            = true
-#   ingress_target_port = 3000
+  # Ingress
+  external            = true
+  ingress_target_port = 8080
 
-#   # Dapr
-#   dapr_appId   = "order"
-#   dapr_appPort = 3000
+  # Resoruces
+  cpu    = 0.5
+  memory = "1.0Gi"
 
-#   # Container
-#   container_image = "epomatti/azure-containerapps-order"
-#   container_envs = [
-#     { name = "DAPR_APP_PORT", value = "3000" },
-#     { name = "DAPR_HTTP_PORT", value = "3500" },
-#     { name = "APPLICATIONINSIGHTS_CONNECTION_STRING", value = azurerm_application_insights.apps.connection_string }
-#   ]
-# }
+  # Container
+  container_image = "epomatti/quarkus-datadog-documents"
+  container_envs = [
+    { name = "QUARKUS_DATASOURCE_USERNAME", value = local.postgres_username },
+    { name = "QUARKUS_DATASOURCE_PASSWORD", value = local.postgres_password },
+    { name = "QUARKUS_DATASOURCE_JDBC_URL", value = module.postgres.jdbc },
+    { name = "DD_SERVICE", value = "documents-service" },
+    { name = "DD_ENV", value = "quarkus-azure" },
+    { name = "DD_AGENT_HOST", value = module.datadog_agent.fqdn },
+    { name = "DD_TRACE_AGENT_URL", value = "http://${module.datadog_agent.fqdn}:8126" },
+    { name = "DD_LOGS_INJECTION", value = "true" },
+    { name = "DD_TRACE_SAMPLE_RATE", value = "1" },
+    { name = "DD_PROFILING_ENABLED", value = "true" },
+  ]
+}
 
 
 ### Outputs ###
 
-# output "order_url" {
-#   value = "https://${module.containerapp_order.fqdn}"
-# }
+output "postgres_jdbc" {
+  value = module.postgres.jdbc
+}
+
+output "order_url" {
+  value = "https://${module.containerapp_documents.fqdn}"
+}

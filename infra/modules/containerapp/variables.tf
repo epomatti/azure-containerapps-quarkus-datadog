@@ -20,7 +20,6 @@ variable "environment" {
 
 variable "external" {
   type    = bool
-  default = true
 }
 
 variable "ingress_target_port" {

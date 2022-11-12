@@ -1,27 +1,6 @@
 # Quarkus Datadog
 
-Quarkus with Datadog and Container Apps.
-
-## Running on Azure
-
-CD into `infra`:
-
-```sh
-cd infra
-```
-
-Create the `.auto.tfvars`:
-
-```hcl
-dd_api_key = "00000000000000000000000000000000"
-```
-
-Start the infra:
-
-```sh
-terraform init
-terraform apply -auto-approve
-```
+Quarkus with Datadog.
 
 ## Local development
 
@@ -43,14 +22,6 @@ Start Quarkus:
 quarkus dev
 ```
 
-## Docker Push
-
-```
-docker login
-docker build -t epomatti/quarkus-datadog-documents .
-docker push epomatti/quarkus-datadog-documents
-```
-
 ## Docker Compose
 
 Set the API key and start the containers:
@@ -69,3 +40,10 @@ curl -X POST localhost:8080/documents
 curl localhost:8080/documents/1
 ```
 
+## Docker Push
+
+```
+docker login
+docker build -t epomatti/quarkus-datadog-documents .
+docker push epomatti/quarkus-datadog-documents
+```

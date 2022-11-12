@@ -38,23 +38,23 @@ resource "azapi_resource" "container_app" {
               memory = var.memory
             }
             env = var.container_envs
-            probes = [
-              {
-                type = "Liveness"
-                httpGet = {
-                  path = "/liveness"
-                  port = var.ingress_target_port
-                  httpHeaders = [
-                    {
-                      name  = "Custom-Header"
-                      value = "Awesome"
-                    }
-                  ]
-                }
-                initialDelaySeconds = 3
-                periodSeconds       = 3
-              }
-            ]
+            # probes = [
+            #   {
+            #     type = "Liveness"
+            #     httpGet = {
+            #       path = "/liveness"
+            #       port = var.ingress_target_port
+            #       httpHeaders = [
+            #         {
+            #           name  = "Custom-Header"
+            #           value = "Awesome"
+            #         }
+            #       ]
+            #     }
+            #     initialDelaySeconds = 3
+            #     periodSeconds       = 3
+            #   }
+            # ]
           }
         ]
         scale = {
